@@ -3,6 +3,7 @@ package com.example.potiondisplay;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectCategory;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,29 +94,19 @@ public class PotionExpansion extends PlaceholderExpansion {
         return null;
     }
 
+    /**
+     * Determines sorting priority using modern PotionEffectCategory:
+     * 0 = Beneficial (Good)
+     * 1 = Neutral
+     * 2 = Harmful (Bad)
+     */
     private int getCategoryPriority(PotionEffectType type) {
-        if (type.isBeneficial()) {
+        PotionEffectCategory category = type.getEffectCategory();
+        if (category == PotionEffectCategory.BENEFICIAL) {
             return 0;
-        } else if (isHarmful(type)) {
+        } else if (category == PotionEffectCategory.HARMFUL) {
             return 2;
         }
-        return 1;
-    }
-
-    private boolean isHarmful(PotionEffectType type) {
-        return type.equals(PotionEffectType.SLOWNESS) ||
-               type.equals(PotionEffectType.MINING_FATIGUE) ||
-               type.equals(PotionEffectType.INSTANT_DAMAGE) ||
-               type.equals(PotionEffectType.NAUSEA) ||
-               type.equals(PotionEffectType.BLINDNESS) ||
-               type.equals(PotionEffectType.HUNGER) ||
-               type.equals(PotionEffectType.WEAKNESS) ||
-               type.equals(PotionEffectType.POISON) ||
-               type.equals(PotionEffectType.WITHER) ||
-               type.equals(PotionEffectType.LEVITATION) ||
-               type.equals(PotionEffectType.BAD_LUCK) ||
-               type.equals(PotionEffectType.DARKNESS) ||
-               type.equals(PotionEffectType.BAD_OMEN) ||
-               type.equals(PotionEffectType.RAID_OMEN);
+        return 1; // NEUTRAL
     }
 }
