@@ -4,3 +4,14 @@ main: com.example.potiondisplay.PotionDisplay
 api-version: '1.21'
 depend: [PlaceholderAPI]
 description: Displays sorted active potion effects formatted with custom Unicode fonts.
+
+commands:
+  potiondisplay:
+    description: Main command for PotionDisplay
+    permission: potiondisplay.admin
+    usage: /<command> reload
+
+permissions:
+  potiondisplay.admin:
+    description: Allows reloading the PotionDisplay configuration
+    default: op
