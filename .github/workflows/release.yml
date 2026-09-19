@@ -1,15 +1,18 @@
-name: Build and Release PotionDisplay
+name: Build and Package PotionDisplay
 
 on:
   push:
+    branches: [ "main" ]
     tags:
-      - 'v*' # Triggers whenever you push a version tag (e.g. v1.0.0)
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +29,16 @@ jobs:
       - name: Build with Maven
         run: mvn clean package --batch-mode
 
+      # Step A: Upload .jar as an Artifact on EVERY push/commit
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PotionDisplay-latest
+          path: target/*.jar
+
+      # Step B: Create an official GitHub Release ONLY when a version tag is pushed
       - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: target/*.jar
