@@ -1,0 +1,6 @@
+name: PotionDisplay
+version: 1.0.0
+main: com.example.potiondisplay.PotionDisplay
+api-version: '1.21'
+depend: [PlaceholderAPI]
+description: Displays sorted active potion effects formatted with custom Unicode fonts.
