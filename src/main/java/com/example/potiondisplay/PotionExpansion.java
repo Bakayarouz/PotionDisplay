@@ -3,8 +3,8 @@ package com.example.potiondisplay;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectCategory;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionEffectTypeCategory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,17 +95,21 @@ public class PotionExpansion extends PlaceholderExpansion {
     }
 
     /**
-     * Determines sorting priority using modern PotionEffectCategory:
+     * Determines sorting priority using Bukkit's PotionEffectTypeCategory:
      * 0 = Beneficial (Good)
      * 1 = Neutral
      * 2 = Harmful (Bad)
      */
     private int getCategoryPriority(PotionEffectType type) {
-        PotionEffectCategory category = type.getEffectCategory();
-        if (category == PotionEffectCategory.BENEFICIAL) {
-            return 0;
-        } else if (category == PotionEffectCategory.HARMFUL) {
-            return 2;
+        try {
+            PotionEffectTypeCategory category = type.getCategory();
+            if (category == PotionEffectTypeCategory.BENEFICIAL) {
+                return 0;
+            } else if (category == PotionEffectTypeCategory.HARMFUL) {
+                return 2;
+            }
+        } catch (Throwable ignored) {
+            // Fallback strategy if API method is unavailable
         }
         return 1; // NEUTRAL
     }
